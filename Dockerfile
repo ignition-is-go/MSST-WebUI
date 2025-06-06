@@ -44,7 +44,7 @@ COPY --from=builder /app/pyproject.toml /app/uv.lock ./
 # Copy essential application files only
 COPY webUI.py ./
 COPY configs_backup/ ./configs/
-COPY data_backup/ ./data/
+COPY data_backup/ ./data_backup/
 COPY inference/ ./inference/
 COPY modules/ ./modules/
 COPY utils/ ./utils/
