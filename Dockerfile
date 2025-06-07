@@ -20,6 +20,12 @@ ENV PATH="/root/.local/bin:$PATH"
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev
 
+# Copy custom librosa wheel and install it
+COPY tools/webUI_for_clouds/librosa-0.9.2-py3-none-any.whl ./
+RUN ls -la librosa-0.9.2-py3-none-any.whl && \
+    uv remove librosa || true && \
+    uv add ./librosa-0.9.2-py3-none-any.whl
+
 # Production stage
 FROM python:3.11-slim as production
 
@@ -40,6 +46,7 @@ ENV PATH="/root/.local/bin:$PATH"
 # Copy uv and installed packages from builder
 COPY --from=builder /app/.venv /app/.venv
 COPY --from=builder /app/pyproject.toml /app/uv.lock ./
+COPY --from=builder /app/librosa-0.9.2-py3-none-any.whl ./
 
 # Copy essential application files only
 COPY webUI.py ./
@@ -52,8 +59,10 @@ COPY webui/ ./webui/
 COPY tools/ ./tools/
 COPY train/ ./train/
 
-# Create necessary directories
-RUN mkdir -p cache tmpdir logs results input pretrain
+# Create necessary directories and initialize data from backup
+RUN mkdir -p cache tmpdir logs results input pretrain data && \
+    cp -r data_backup/* data/ && \
+    ls -la data/
 
 EXPOSE 7860
 
