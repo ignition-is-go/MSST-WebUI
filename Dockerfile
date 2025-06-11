@@ -66,4 +66,4 @@ RUN mkdir -p cache tmpdir logs results input pretrain data && \
 
 EXPOSE 7860
 
-CMD ["uv", "run", "webUI.py", "--use_cloud", "--ip_address", "0.0.0.0", "--port", "7860"]
+CMD ["uv", "run", "webUI.py", "--use_cloud", "--ip_address", "0.0.0.0", "--port", "7860", "--debug"]

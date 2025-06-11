@@ -217,7 +217,7 @@ def launch(server_name=None, server_port=None, share=True):
 	force_cpu_value = True if (webui_config["inference"]["force_cpu"] or force_cpu) else False
 
 	logger.info(f"WebUI Version: {PACKAGE_VERSION}, System: {platform.system()}, Machine: {platform.machine()}")
-	app().launch(share=share, show_api=False, server_name=server_name, server_port=server_port)
+	app().launch(share=share, show_api=True, server_name=server_name, server_port=server_port)
 
 
 def app():
