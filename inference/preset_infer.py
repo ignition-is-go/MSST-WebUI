@@ -116,6 +116,9 @@ class PresetInfer(Presets):
 	def process_folder(self, input_folder, store_dir, output_format, extra_output=False):
 		direct_output = os.path.join(store_dir, "extra_output") if extra_output else store_dir
 
+		# Ensure TEMP_PATH directory exists before using it
+		os.makedirs(TEMP_PATH, exist_ok=True)
+
 		for current_step in range(self.total_steps):
 			if current_step == 0:
 				input_to_use = input_folder
@@ -131,6 +134,10 @@ class PresetInfer(Presets):
 			if self.total_steps == 1:
 				input_to_use = input_folder
 				tmp_store_dir = store_dir
+
+			# Ensure the temporary store directory exists before processing
+			if tmp_store_dir != store_dir:  # Don't create the final output dir if it's the same as store_dir
+				os.makedirs(tmp_store_dir, exist_ok=True)
 
 			data = self.get_step(current_step)
 			model_type = data["model_type"]
@@ -231,6 +238,9 @@ class EnsembleInfer(Presets):
 		return success_files, failed_files
 
 	def process_folder(self, input_folder):
+		# Ensure TEMP_PATH directory exists before using it
+		os.makedirs(TEMP_PATH, exist_ok=True)
+		
 		self.ensemble_data = dict()
 		for i, data in enumerate(self.presets):
 			model_type = data["model_type"]
