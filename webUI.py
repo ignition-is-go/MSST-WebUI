@@ -87,7 +87,7 @@ def main(args):
 	from webui import app
 
 	app.app(platform=platform_info, device=devices, force_cpu=force_cpu, theme=theme_path).queue().launch(
-		inbrowser=True, share=share, server_name=server_name, server_port=server_port, show_api=True, favicon_path="docs/logo.png"
+		inbrowser=not args.no_browser, share=share, server_name=server_name, server_port=server_port, show_api=True, favicon_path="docs/logo.png"
 	)
 
 
@@ -109,6 +109,7 @@ if __name__ == "__main__":
 	parser.add_argument("--language", type=str, default=None, choices=[None, "Auto", "zh_CN", "zh_TW", "en_US", "ja_JP", "ko_KR"], help="Set WebUI language (Default: Auto).")
 	parser.add_argument("--model_download_link", type=str, default=None, choices=[None, "Auto", "huggingface.co", "hf-mirror.com"], help="Set model download link (Default: Auto).")
 	parser.add_argument("--factory_reset", action="store_true", help="Reset WebUI settings and model seetings to default, clear cache and exit.")
+	parser.add_argument("--no_browser", action="store_true", help="Do not automatically open the browser when starting WebUI.")
 	args = parser.parse_args()
 
 	if args.factory_reset:
